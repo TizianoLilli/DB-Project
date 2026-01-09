@@ -24,7 +24,7 @@ public class ConnectionManager {
                 String pass = properties.getProperty("PASS");
 
                 conn = DriverManager.getConnection(connectionUrl, user, pass);
-                System.out.println("Logged in successfully!");
+                System.out.println("Successfully connected to DB!");
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -38,10 +38,10 @@ public class ConnectionManager {
             try {
                 if (!conn.isClosed()) {
                     conn.close();
-                    System.out.println("Logged out successfully!");
+                    System.out.println("Successfully disconnected to DB!");
                 }
             } catch (SQLException e) {
-                System.err.println("Error during log out.");
+                System.err.println("Error during DB disconnection.");
                 e.printStackTrace();
             }
         }

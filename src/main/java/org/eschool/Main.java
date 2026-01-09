@@ -1,21 +1,27 @@
 package org.eschool;
 
-import java.util.Scanner;
+import org.eschool.control.Controller;
+import org.eschool.control.LoginController;
+import org.eschool.utils.ConnectionManager;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Main {
     static void main() {
 
-        Scanner scanner = new Scanner(System.in);
-
         try {
+            Connection connection = ConnectionManager.getConnection();
 
             System.out.print("Hello and Welcome to ILearn!\n");
-            System.out.print("""
-                    1) Log in 
-                    2) Registration
-                    """);
+            Controller controller = new LoginController(connection);
+            controller.start();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.err.println("Error during DB disconnection: " + e.getMessage());
+            ConnectionManager.closeConnection();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
