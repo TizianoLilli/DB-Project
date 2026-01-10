@@ -42,7 +42,7 @@ public class IscrittoController implements Controller{
     }
 
     public void Subscribe(){ //per iscriversi ad un corso
-
+        System.out.print("Subscribed!!!");
     }
 
     public void DeleteSubscription(){}

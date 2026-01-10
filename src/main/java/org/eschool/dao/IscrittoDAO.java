@@ -17,7 +17,7 @@ public class IscrittoDAO {
     }
 
     public Iscritto getIscrittoFromId(int id){
-        String query = "SELECT * FROM Iscritto WHERE id_account = ?";
+        String query = "SELECT * FROM iscritto WHERE id_account = ?";
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -33,7 +33,7 @@ public class IscrittoDAO {
                         rs.getString("cognome"),
                         rs.getDate("data_nascita").toLocalDate(),
                         rs.getString("indirizzo"),
-                        rs.getInt("recapito")
+                        rs.getString("recapito")
                         );
             }
 

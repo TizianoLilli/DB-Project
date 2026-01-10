@@ -17,7 +17,7 @@ public class AccountDAO {
     }
 
     public Account getAccount(String user, String pass){
-        String query = "SELECT * FROM Account WHERE username = ? AND Password = ?";
+        String query = "SELECT * FROM account WHERE username = ? AND Password = ?";
 
         try{
             PreparedStatement ps = connection.prepareStatement(query);
@@ -28,7 +28,7 @@ public class AccountDAO {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
-                int idx = rs.getInt("Ruolo");
+                int idx = rs.getInt("role");
                 Ruolo role = Ruolo.fromIdx(idx);
 
                 return new Account(rs.getInt("id"), user, pass, role);

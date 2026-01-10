@@ -27,12 +27,13 @@ public class LoginView {
 
                 if (value > 0 && value < 4) {
                     choice = true;
-                }
+                } else System.out.print("Invalid option!! Insert a valid number...\n");
+
             } catch (InputMismatchException e) {
-                scanner.nextLine(); //pulisce il buffer
-            } finally {
                 System.out.print("Invalid option!! Insert a valid number...\n");
+                scanner.nextLine(); //pulisce il buffer
             }
+
         }
 
         return value;
@@ -40,6 +41,7 @@ public class LoginView {
 
     public Account auth(){
 
+        scanner.nextLine();
         System.out.print("Username: ");
         String username = scanner.nextLine().trim();
 

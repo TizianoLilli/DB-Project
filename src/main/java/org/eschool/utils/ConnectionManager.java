@@ -8,22 +8,26 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionManager {
-    private static Connection conn;
+    private static Connection conn = null;
 
     private ConnectionManager() {}
 
     public static Connection getConnection() throws SQLException {
         if (conn == null || conn.isClosed()){
-            try (InputStream input = new FileInputStream("src/main/resources/config.properties")) {
+            try {
+
+                Class.forName("org.mariadb.jdbc.Driver");
+                InputStream input = ConnectionManager.class
+                        .getClassLoader()
+                        .getResourceAsStream("config.properties");
 
                 Properties properties = new Properties();
                 properties.load(input);
 
-                String connectionUrl = properties.getProperty("DB_URL");
-                String user = properties.getProperty("USER");
-                String pass = properties.getProperty("PASS");
+                conn = DriverManager.getConnection(properties.getProperty("DB_URL"),
+                        properties.getProperty("USER"),
+                        properties.getProperty("PASS"));
 
-                conn = DriverManager.getConnection(connectionUrl, user, pass);
                 System.out.println("Successfully connected to DB!");
 
             } catch (Exception e) {

@@ -9,9 +9,9 @@ public class Iscritto {
     private String cognome;
     private LocalDate data_nascita;
     private String indirizzo;
-    private int recapito; // cellulare
+    private String recapito; // cellulare
 
-    public Iscritto (int id, String cf, String nome, String cognome, LocalDate data, String indirizzo, int recapito){
+    public Iscritto (int id, String cf, String nome, String cognome, LocalDate data, String indirizzo, String recapito){
         this.id = id;
         this.cf = cf;
         this.nome = nome;
@@ -45,7 +45,7 @@ public class Iscritto {
 
     public void setIndirizzo(String indirizzo) {this.indirizzo = indirizzo;}
 
-    public int getRecapito() {return recapito;}
+    public String getRecapito() {return recapito;}
 
-    public void setRecapito(int recapito) {this.recapito = recapito;}
+    public void setRecapito(String recapito) {this.recapito = recapito;}
 }
