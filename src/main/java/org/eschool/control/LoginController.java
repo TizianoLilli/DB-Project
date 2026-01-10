@@ -1,46 +1,46 @@
 package org.eschool.control;
 
+import org.eschool.dao.AccountDAO;
 import org.eschool.model.Account;
 import org.eschool.view.LoginView;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.sql.SQLException;
 
-public class LoginController implements Controller{
+public class LoginController {
     private LoginView view;
-    Connection connection;
+    private AccountDAO accountDAO;
 
-    public LoginController(Connection conn){
+    public LoginController() throws SQLException {
         this.view = new LoginView();
-        this.connection = conn;
+        this.accountDAO = new AccountDAO();
     }
 
     private int choice;
 
-    @Override
-    public void start() throws IOException {
+    public Account setup() throws IOException {
         boolean exit = false;
 
         while(!exit){
             choice = view.ShowMenu();
 
             switch (choice){
-                case 1 -> LogIn();
+                case 1 -> {
+                    return LogIn();
+                }
                 case 2 -> /*Registration();*/ System.out.print("Registrated");
                 case 3 -> exit = true;
             }
         }
 
         System.out.print("\nExiting...");
+        return null;
     }
 
-    private String user;
-    private String pass;
     private Account account;
-    private AccountDAO dao;
 
-    public void LogIn(){
+    public Account LogIn(){
         account = view.auth();
-        dao.getAccount();
+        return accountDAO.getAccount(account.getUsername(), account.getPassword());
     }
 }

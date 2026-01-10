@@ -46,6 +46,6 @@ public class LoginView {
         System.out.print("Password: ");
         String password = scanner.nextLine().trim();
 
-        return new Account(username, password);
+        return new Account(-1, username, password, null);
     }
 }

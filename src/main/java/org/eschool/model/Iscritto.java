@@ -3,6 +3,7 @@ package org.eschool.model;
 import java.time.LocalDate;
 
 public class Iscritto {
+    private int id; //matricola
     private String cf;
     private String nome;
     private String cognome;
@@ -10,7 +11,8 @@ public class Iscritto {
     private String indirizzo;
     private int recapito; // cellulare
 
-    private Iscritto (String cf, String nome, String cognome, LocalDate data, String indirizzo, int recapito){
+    public Iscritto (int id, String cf, String nome, String cognome, LocalDate data, String indirizzo, int recapito){
+        this.id = id;
         this.cf = cf;
         this.nome = nome;
         this.cognome = cognome;
@@ -18,6 +20,10 @@ public class Iscritto {
         this.indirizzo = indirizzo;
         this.recapito = recapito;
     }
+
+    public int getId() {return id;}
+
+    public void setId(int id) {this.id = id;}
 
     public String getCf() {return cf;}
 
