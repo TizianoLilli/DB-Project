@@ -18,6 +18,7 @@ public class IscrittoController implements Controller{
     private IscrittoView view;
     private IscrittoDAO iscrittoDAO;
     private CorsoDAO corsoDAO;
+    private PartecipazioneDAO partecipazioneDAO;
 
     public IscrittoController (Account account) throws SQLException {
         this.id_account= account.getId();
@@ -25,6 +26,7 @@ public class IscrittoController implements Controller{
         this.iscritto = iscrittoDAO.getIscrittoFromId(id_account);
         this.view = new IscrittoView();
         this.corsoDAO = new CorsoDAO();
+        this.partecipazioneDAO = new PartecipazioneDAO();
     }
 
     private int choice;
@@ -46,13 +48,10 @@ public class IscrittoController implements Controller{
         System.out.print("Exiting...");
     }
 
-    private PartecipazioneDAO partecipazioneDAO;
-
     public void subscribe() throws SQLException { //per iscriversi ad un corso
         List<Corso> corsi = corsoDAO.getAllCourses();
 
         if (!corsi.isEmpty()){
-            partecipazioneDAO = new PartecipazioneDAO();
             int id_corso = view.showCourses(corsi);
 
             try{
@@ -76,7 +75,8 @@ public class IscrittoController implements Controller{
             int value = view.showActiveCourse(id_corso);
 
             if(value == 1) {
-                partecipazioneDAO.deletePartecipation();
+                partecipazioneDAO.deletePartecipation(id_account, id_corso);
+                System.out.println("Successfully deleted subscription!");
             }
         }
     }

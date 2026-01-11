@@ -37,12 +37,29 @@ public class PartecipazioneDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()){
-                value = rs.getInt("id");
+                value = rs.getInt("corso");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return value;
+    }
+
+    public void deletePartecipation(int id_iscritto, int id_corso){
+        String sql = "{CALL delete_partecipation(?, ?)}";
+
+        try (CallableStatement cs = connection.prepareCall(sql)) {
+
+            cs.setInt(1, id_iscritto);
+            cs.setInt(2, id_corso);
+
+            cs.execute();
+        } catch (SQLException e){
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("ErrorCode: " + e.getErrorCode());
+            System.out.println("Message: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

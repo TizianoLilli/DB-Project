@@ -36,7 +36,7 @@ public class IscrittoView {
     }
 
     public int showActiveCourse(int id){
-        System.out.printf("You have an active subscription\nCourse id: %d", id);
+        System.out.printf("You have an active subscription\nCourse id: %d\n", id);
 
         System.out.print("""
                 Delete subscription for this course?
