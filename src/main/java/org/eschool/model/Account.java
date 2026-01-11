@@ -1,6 +1,6 @@
 package org.eschool.model;
 
-import org.eschool.utils.Ruolo;
+import org.eschool.utils.enums.Ruolo;
 
 public class Account {
     private int id;

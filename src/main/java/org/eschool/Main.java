@@ -8,7 +8,6 @@ import org.eschool.view.AdminView;
 import org.eschool.view.InsegnanteView;
 import org.eschool.view.SegreteriaView;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class Main {
@@ -36,8 +35,6 @@ public class Main {
         } catch (SQLException e) {
             System.err.println("Error during DB disconnection: " + e.getMessage());
             ConnectionManager.closeConnection();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
 

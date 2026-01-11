@@ -3,7 +3,7 @@ package org.eschool.model;
 import java.time.LocalDate;
 
 public class Corso {
-    private String id;
+    private String id; // (x*1000)+codice dove x indica il livello (va da 1 a 7)
     private String livello;
     private LocalDate data_attivazione;
 

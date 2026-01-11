@@ -17,10 +17,9 @@ public class IscrittoDAO {
     }
 
     public Iscritto getIscrittoFromId(int id){
-        String query = "SELECT * FROM iscritto WHERE id_account = ?";
+        String query = "SELECT * FROM iscritto WHERE id = ?";
 
-        try{
-            PreparedStatement ps = connection.prepareStatement(query);
+        try (PreparedStatement ps = connection.prepareStatement(query);) { //equivalente a fare ps.close() a fine try
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
@@ -36,10 +35,12 @@ public class IscrittoDAO {
                         rs.getString("recapito")
                         );
             }
+            rs.close(); //chiudo il result set e rilascio le risorse
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return null;
     }
+
 }

@@ -1,4 +1,4 @@
-package org.eschool.utils;
+package org.eschool.utils.enums;
 
 public enum StatoLezione {
     PROGRAMMATA,

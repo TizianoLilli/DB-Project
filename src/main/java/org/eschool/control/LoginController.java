@@ -4,7 +4,6 @@ import org.eschool.dao.AccountDAO;
 import org.eschool.model.Account;
 import org.eschool.view.LoginView;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class LoginController {
@@ -18,7 +17,7 @@ public class LoginController {
 
     private int choice;
 
-    public Account setup() throws IOException {
+    public Account setup() {
         boolean exit = false;
 
         while(!exit){
@@ -26,7 +25,7 @@ public class LoginController {
 
             switch (choice){
                 case 1 -> {
-                    return LogIn();
+                    return logIn();
                 }
                 case 2 -> /*Registration();*/ System.out.print("Registrated");
                 case 3 -> exit = true;
@@ -39,7 +38,7 @@ public class LoginController {
 
     private Account account;
 
-    public Account LogIn(){
+    public Account logIn(){
         account = view.auth();
         return accountDAO.getAccount(account.getUsername(), account.getPassword());
     }

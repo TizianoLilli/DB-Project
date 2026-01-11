@@ -1,7 +1,8 @@
 package org.eschool.control;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public interface Controller {
-    public void start() throws IOException;
+    void start() throws SQLException;
 }

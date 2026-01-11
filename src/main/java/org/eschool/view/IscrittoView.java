@@ -1,12 +1,13 @@
 package org.eschool.view;
 
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import org.eschool.model.Corso;
+import org.eschool.utils.Input;
+
+import java.util.List;
 
 public class IscrittoView {
 
-    public int ShowMenu() throws IOException {
+    public int showMenu() {
 
         System.out.print("""
                 1) Subscribe to a new course
@@ -14,25 +15,35 @@ public class IscrittoView {
                 3) Exit
                 """);
 
-        Scanner scanner = new Scanner(System.in);
-        boolean choice = false;
-        int value = -1;
-        
-        while (!choice){
-                try{
-                    System.out.print("Make your choice: ");
-                    value = scanner.nextInt();
+        return Input.read(1,3);
+    }
 
-                    if (value>0 && value<4){
-                        choice = true;
-                    } else System.out.print("Invalid option!! Insert a valid number...\n");
+    public int showCourses(List<Corso> corsi){
+        System.out.println("Select a course to subscribe:");
+        System.out.println("Code | Level | Activation date");
 
-                } catch (InputMismatchException e) {
-                    System.out.print("Invalid option!! Insert a valid number...\n");
-                    scanner.nextLine(); //pulisce il buffer
-                }
+        for (Corso c : corsi) {
+            System.out.printf(
+                    "%s | %s | %s%n",
+                    c.getId(),
+                    c.getLivello(),
+                    c.getData_attivazione()
+            );
         }
 
-        return value;
+        System.out.print("Make your choice (insert the numeric code): ");
+        return Input.readInt();
+    }
+
+    public int showActiveCourse(int id){
+        System.out.printf("You have an active subscription\nCourse id: %d", id);
+
+        System.out.print("""
+                Delete subscription for this course?
+                1) Yes
+                2) No
+                """);
+
+        return Input.read(1,2);
     }
 }

@@ -1,6 +1,6 @@
 package org.eschool.model;
 
-import org.eschool.utils.StatoLezione;
+import org.eschool.utils.enums.StatoLezione;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
