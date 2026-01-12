@@ -5,9 +5,7 @@ public enum TipoLivello {
     INTERMEDIATE(2),
     FIRST_CERTIFICATE(3),
     ADVANCED(4),
-    PROFICIENCY(5),
-    BUSINESS(6),
-    INTENSIVE(7);
+    PROFICIENCY(5);
 
     private final int livello;
 

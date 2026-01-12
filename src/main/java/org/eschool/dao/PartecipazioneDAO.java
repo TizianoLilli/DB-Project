@@ -13,7 +13,7 @@ public class PartecipazioneDAO {
     public void newPartecipation(int id_iscritto, int id_corso){
         String sql = "{CALL new_partecipation(?, ?)}";
 
-        try (CallableStatement cs = connection.prepareCall(sql)) {
+        try (CallableStatement cs = connection.prepareCall(sql)) { //equivalente a fare cs.close() a fine try
 
             cs.setInt(1, id_iscritto);
             cs.setInt(2, id_corso);
@@ -31,7 +31,7 @@ public class PartecipazioneDAO {
         String query = "SELECT corso FROM partecipazione WHERE iscritto = ?";
         int value = -1;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) { //equivalente a fare ps.close() a fine try
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
@@ -39,6 +39,8 @@ public class PartecipazioneDAO {
             if (rs.next()){
                 value = rs.getInt("corso");
             }
+            rs.close(); //chiudo il result set e rilascio le risorse
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

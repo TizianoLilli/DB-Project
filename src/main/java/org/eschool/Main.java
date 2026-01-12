@@ -1,5 +1,6 @@
 package org.eschool;
 
+import org.eschool.control.AdminController;
 import org.eschool.control.IscrittoController;
 import org.eschool.control.LoginController;
 import org.eschool.model.Account;
@@ -26,7 +27,7 @@ public class Main {
                 switch (account.getRole()){
                     case ISCRITTO -> new IscrittoController(account).start();
                     case INSEGNANTE -> new InsegnanteView();
-                    case PERSONALE_AMMINISTRATIVO -> new AdminView();
+                    case PERSONALE_AMMINISTRATIVO -> new AdminController(account).start();
                     case PERSONALE_SEGRETERIA -> new SegreteriaView();
                     default -> ok = false;
                 }

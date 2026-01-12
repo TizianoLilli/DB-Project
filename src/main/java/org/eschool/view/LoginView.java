@@ -31,4 +31,5 @@ public class LoginView {
 
         return new Account(-1, username, password, null);
     }
+
 }

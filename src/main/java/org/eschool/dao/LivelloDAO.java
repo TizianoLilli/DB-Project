@@ -11,32 +11,27 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CorsoDAO {
+public class LivelloDAO {
     private final Connection connection;
 
-    public CorsoDAO() throws SQLException {this.connection = ConnectionManager.getConnection();}
+    public LivelloDAO() throws SQLException {this.connection = ConnectionManager.getConnection();}
 
-    public List<Corso> getAllCourses(){
-        List<Corso> corsi = new ArrayList<>();
-        String query = "SELECT * FROM corso";
+    public List<Livello> getAllLevels(){
+        List<Livello> livelli = new ArrayList<>();
+        String query = "SELECT * FROM livello";
 
         try (PreparedStatement ps = connection.prepareStatement(query); //equivalente a fare ps.close() a fine try
              ResultSet rs = ps.executeQuery();) { //equivalente a fare rs.close() ...
 
             while (rs.next()){
-                Corso corso = new Corso(rs.getString("id"),
-                        rs.getString("livello"),
-                        rs.getDate("data_attivazione").toLocalDate());
-                corsi.add(corso);
+                Livello livello = new Livello(rs.getString("nome"),
+                        rs.getString("libro"),
+                        rs.getBoolean("esame"));
+                livelli.add(livello);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return corsi;
+        return livelli;
     }
-
-//    public Corso newCourse(String livello){
-//
-//    }
-
 }
