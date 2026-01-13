@@ -12,9 +12,11 @@ public class LoginView {
     public int ShowMenu() {
 
         System.out.print("""
+                ---------------------------------
                 1) Log in
                 2) Registration
                 3) Exit
+                ---------------------------------
                 """);
 
         return Input.read(1,3);

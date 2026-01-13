@@ -18,10 +18,10 @@ public class Input {
 
                 if (value>=min && value<=max){
                     choice = true;
-                } else System.out.print("Invalid option!! Insert a valid number...");
+                } else System.out.println("Invalid option!! Insert a valid number...");
 
             } catch (InputMismatchException e) {
-                System.out.print("Invalid option!! Insert a valid number...");
+                System.out.println("Invalid option!! Insert a valid number...");
                 scanner.nextLine(); //pulisce il buffer
             }
         }

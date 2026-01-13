@@ -10,9 +10,11 @@ public class IscrittoView {
     public int showMenu() {
 
         System.out.print("""
+                ---------------------------------
                 1) Subscribe to a new course
                 2) Delete subscription to a course
                 3) Exit
+                ---------------------------------
                 """);
 
         return Input.read(1,3);
@@ -39,9 +41,11 @@ public class IscrittoView {
         System.out.printf("You have an active subscription\nCourse id: %d\n", id);
 
         System.out.print("""
+                ---------------------------------
                 Delete subscription for this course?
                 1) Yes
                 2) No
+                ---------------------------------
                 """);
 
         return Input.read(1,2);

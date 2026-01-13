@@ -4,10 +4,8 @@ import org.eschool.model.Corso;
 import org.eschool.model.Livello;
 import org.eschool.utils.ConnectionManager;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +33,21 @@ public class CorsoDAO {
         return corsi;
     }
 
-//    public Corso newCourse(String livello){
-//
-//    }
+    public int newCourse(String livello) throws SQLException {
+        String query = "INSERT INTO corso(data_attivazione, livello) VALUES (?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) { //equivalente a fare ps.close() a fine try
+            ps.setDate(1, Date.valueOf(LocalDate.now()));
+            ps.setString(2, livello);
+
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("No ID generated for course");
+        }
+        return -1;
+    }
 
 }
