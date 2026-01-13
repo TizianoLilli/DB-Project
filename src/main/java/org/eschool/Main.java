@@ -1,12 +1,11 @@
 package org.eschool;
 
 import org.eschool.control.AdminController;
+import org.eschool.control.InsegnanteController;
 import org.eschool.control.IscrittoController;
 import org.eschool.control.LoginController;
 import org.eschool.model.Account;
 import org.eschool.utils.ConnectionManager;
-import org.eschool.view.AdminView;
-import org.eschool.view.InsegnanteView;
 import org.eschool.view.SegreteriaView;
 
 import java.sql.SQLException;
@@ -26,7 +25,7 @@ public class Main {
 
                 switch (account.getRole()){
                     case ISCRITTO -> new IscrittoController(account).start();
-                    case INSEGNANTE -> new InsegnanteView();
+                    case INSEGNANTE -> new InsegnanteController(account).start();
                     case PERSONALE_AMMINISTRATIVO -> new AdminController(account).start();
                     case PERSONALE_SEGRETERIA -> new SegreteriaView();
                     default -> ok = false;
