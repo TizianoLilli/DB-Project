@@ -82,7 +82,7 @@ public class AdminController implements Controller {
             insegnanteDAO.newTeacher(user, pass, insegnante);
             System.out.println("Teacher successfully inserted!");
             sendCredentials(user, pass);
-        } catch (Exception e){
+        } catch (SQLException e){
             System.out.println(e.getMessage());
         }
 

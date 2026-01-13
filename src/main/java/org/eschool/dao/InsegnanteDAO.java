@@ -35,7 +35,7 @@ public class InsegnanteDAO {
         return insegnanti;
     }
 
-    public void newTeacher(String user, String pass, Insegnante insegnante){
+    public void newTeacher(String user, String pass, Insegnante insegnante) throws SQLException {
 
         String query = "{CALL new_teacher(?, ?, ?, ?, ?, ?, ?)}";
 
@@ -52,7 +52,7 @@ public class InsegnanteDAO {
             cs.executeQuery();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new SQLException(e.getMessage());
         }
     }
 

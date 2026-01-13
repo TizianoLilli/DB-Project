@@ -1,13 +1,13 @@
 package org.eschool.dao;
 
 import org.eschool.model.Account;
+import org.eschool.model.Insegnante;
 import org.eschool.model.Iscritto;
 import org.eschool.utils.ConnectionManager;
+import org.eschool.utils.enums.Ruolo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class IscrittoDAO {
     private final Connection connection;
@@ -41,6 +41,29 @@ public class IscrittoDAO {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public void newSub(String user, String pass, Iscritto iscritto) throws SQLException {
+
+        String query = "{CALL new_subscriber(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+
+        try (CallableStatement cs = connection.prepareCall(query)) {
+
+            cs.setString(1, user);
+            cs.setString(2, pass);
+            cs.setInt(3, Ruolo.ISCRITTO.getIdx());
+            cs.setString(4, iscritto.getCf());
+            cs.setString(5, iscritto.getNome());
+            cs.setString(6, iscritto.getCognome());
+            cs.setDate(7, Date.valueOf(iscritto.getData_nascita()));
+            cs.setString(8, iscritto.getIndirizzo());
+            cs.setString(9, iscritto.getRecapito());
+
+            cs.executeQuery();
+
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
     }
 
 }
