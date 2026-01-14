@@ -14,7 +14,7 @@ public class InsegnanteView {
         System.out.print("""
                 ---------------------------------
                 1) Assign absence
-                2) Produce report
+                2) Produce Report
                 3) Exit
                 ---------------------------------
                 """);

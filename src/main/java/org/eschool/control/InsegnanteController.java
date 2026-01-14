@@ -1,11 +1,16 @@
 package org.eschool.control;
 
 import org.eschool.dao.AssenzaDAO;
+import org.eschool.dao.ReportDAO;
 import org.eschool.model.Account;
 import org.eschool.model.Lezione;
+import org.eschool.utils.DataReport;
 import org.eschool.view.InsegnanteView;
 
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.List;
 
 public class InsegnanteController implements Controller{
     private int id_account;
@@ -26,7 +31,7 @@ public class InsegnanteController implements Controller{
 
             switch (choice){
                 case 1 -> assignAbsence();
-                case 2 -> produceReport();
+                case 2 -> produceWeeklyReport();
                 case 3 -> exit = true;
             }
         }
@@ -51,6 +56,23 @@ public class InsegnanteController implements Controller{
 
     }
 
-    public void produceReport(){}
+    public void produceWeeklyReport() throws SQLException {
+        ReportDAO reportDAO = new ReportDAO();
+
+        LocalDate today = LocalDate.now();
+        LocalDate beginOfTheWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfTheWeek = today.with(DayOfWeek.SUNDAY).plusWeeks(1);
+
+        List<DataReport> report = reportDAO.getWeeklyReport(id_account, beginOfTheWeek, endOfTheWeek);
+        if (!report.isEmpty()) publishWeeklyReport(report);
+        else System.out.println("Error producing report");
+
+    }
+
+    public void publishWeeklyReport(List<DataReport> r){
+        //dummy method:
+        //pubblico il report sul sito della scuola
+        System.out.println("Report successfully published!");
+    }
 
 }

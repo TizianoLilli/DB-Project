@@ -1,16 +1,17 @@
 package org.eschool.control;
 
-import org.eschool.dao.AfferenzaDAO;
-import org.eschool.dao.CorsoDAO;
-import org.eschool.dao.InsegnanteDAO;
-import org.eschool.dao.LivelloDAO;
+import org.eschool.dao.*;
 import org.eschool.model.Account;
 import org.eschool.model.Corso;
 import org.eschool.model.Insegnante;
 import org.eschool.model.Livello;
+import org.eschool.utils.DataReport;
 import org.eschool.view.AdminView;
 
 import java.sql.SQLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.eschool.control.LoginController.generatePassword;
@@ -44,7 +45,8 @@ public class AdminController implements Controller {
                 case 1 -> insertCourse();
                 case 2 -> insertTeacher();
                 case 3 -> assignTeacher();
-                case 4 -> exit = true;
+                case 4 -> produceMonthlyReport();
+                case 5 -> exit = true;
             }
         }
 
@@ -116,4 +118,24 @@ public class AdminController implements Controller {
         }
 
     }
+
+    public void produceMonthlyReport() throws SQLException {
+        ReportDAO reportDAO = new ReportDAO();
+
+        LocalDate today = LocalDate.now();
+        LocalDate beginOfTheMonth = today.withDayOfMonth(1);
+        LocalDate endOfTheMonth = today.plusMonths(1).withDayOfMonth(today.plusMonths(1).lengthOfMonth());
+
+        List<DataReport> report = reportDAO.getMonthlyReport(beginOfTheMonth, endOfTheMonth);
+        if (!report.isEmpty()) publishMonthlyReport(report);
+        else System.out.println("Error producing report");
+
+    }
+
+    public void publishMonthlyReport(List<DataReport> r){
+        //dummy method:
+        //pubblico il report sul sito della scuola
+        System.out.println("Report successfully published!");
+    }
+
 }

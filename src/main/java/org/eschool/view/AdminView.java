@@ -15,12 +15,13 @@ public class AdminView {
                 ---------------------------------
                 1) Insert new course
                 2) Insert new teacher
-                3) Assign a teacher to a course
-                4) Exit
+                3) Assign teacher to a course
+                4) Produce Report
+                5) Exit
                 ---------------------------------
                 """);
 
-        return Input.read(1,4);
+        return Input.read(1,5);
     }
 
     public void showLevels(List<Livello> livelli){
