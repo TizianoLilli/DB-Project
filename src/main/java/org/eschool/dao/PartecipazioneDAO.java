@@ -29,22 +29,20 @@ public class PartecipazioneDAO {
 
     public int getCourseFromIscritto(int id){
         String query = "SELECT corso FROM partecipazione WHERE iscritto = ?";
-        int value = -1;
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
 
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()){
-                value = rs.getInt("corso");
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()){
+                    return rs.getInt("corso");
+                }
             }
-            rs.close(); //chiudo il result set e rilascio le risorse
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return value;
+        throw new RuntimeException();
     }
 
     public void deletePartecipation(int id_iscritto, int id_corso){

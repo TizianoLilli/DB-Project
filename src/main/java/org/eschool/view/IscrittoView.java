@@ -11,8 +11,8 @@ public class IscrittoView {
 
         System.out.print("""
                 ---------------------------------
-                1) Subscribe to a new course
-                2) Delete subscription to a course
+                1) Show all courses
+                2) Show my subscription
                 3) Exit
                 ---------------------------------
                 """);
@@ -20,8 +20,8 @@ public class IscrittoView {
         return Input.read(1,3);
     }
 
-    public int showCourses(List<Corso> corsi){
-        System.out.println("Select a course to subscribe:");
+    public void showCourses(List<Corso> corsi){
+        System.out.println("Here are all courses");
         System.out.println("Code | Level | Activation date");
 
         for (Corso c : corsi) {
@@ -32,22 +32,9 @@ public class IscrittoView {
                     c.getData_attivazione()
             );
         }
-
-        System.out.print("Make your choice (insert the numeric code): ");
-        return Input.readInt();
     }
 
-    public int showActiveCourse(int id){
+    public void showActiveCourse(int id){
         System.out.printf("You have an active subscription\nCourse id: %d\n", id);
-
-        System.out.print("""
-                ---------------------------------
-                Delete subscription for this course?
-                1) Yes
-                2) No
-                ---------------------------------
-                """);
-
-        return Input.read(1,2);
     }
 }

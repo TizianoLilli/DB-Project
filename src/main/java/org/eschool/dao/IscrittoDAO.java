@@ -1,6 +1,7 @@
 package org.eschool.dao;
 
 import org.eschool.model.Account;
+import org.eschool.model.Corso;
 import org.eschool.model.Insegnante;
 import org.eschool.model.Iscritto;
 import org.eschool.utils.ConnectionManager;
@@ -8,12 +9,38 @@ import org.eschool.utils.enums.Ruolo;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IscrittoDAO {
     private final Connection connection;
 
     public IscrittoDAO () throws SQLException {
         this.connection = ConnectionManager.getConnection();
+    }
+
+    public List<Iscritto> getAllSubscribers(){
+        List<Iscritto> iscritti = new ArrayList<>();
+        String query = "SELECT * FROM iscritto";
+
+        try (PreparedStatement ps = connection.prepareStatement(query); //equivalente a fare ps.close() a fine try
+             ResultSet rs = ps.executeQuery();) { //equivalente a fare rs.close() ...
+
+            while (rs.next()){
+                Iscritto iscritto = new Iscritto(
+                        rs.getInt("id"),
+                        rs.getString("cf"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDate("data_nascita").toLocalDate(),
+                        rs.getString("indirizzo"),
+                        rs.getString("recapito"));
+                iscritti.add(iscritto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return iscritti;
     }
 
     public Iscritto getIscrittoFromId(int id){

@@ -1,9 +1,6 @@
 package org.eschool;
 
-import org.eschool.control.AdminController;
-import org.eschool.control.InsegnanteController;
-import org.eschool.control.IscrittoController;
-import org.eschool.control.LoginController;
+import org.eschool.control.*;
 import org.eschool.model.Account;
 import org.eschool.utils.ConnectionManager;
 import org.eschool.view.SegreteriaView;
@@ -27,7 +24,7 @@ public class Main {
                     case ISCRITTO -> new IscrittoController(account).start();
                     case INSEGNANTE -> new InsegnanteController(account).start();
                     case PERSONALE_AMMINISTRATIVO -> new AdminController(account).start();
-                    case PERSONALE_SEGRETERIA -> new SegreteriaView();
+                    case PERSONALE_SEGRETERIA -> new SegreteriaController(account).start();
                     default -> ok = false;
                 }
             }
