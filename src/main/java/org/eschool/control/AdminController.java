@@ -127,7 +127,10 @@ public class AdminController implements Controller {
         LocalDate endOfTheMonth = today.plusMonths(1).withDayOfMonth(today.plusMonths(1).lengthOfMonth());
 
         List<DataReport> report = reportDAO.getMonthlyReport(beginOfTheMonth, endOfTheMonth);
-        if (!report.isEmpty()) publishMonthlyReport(report);
+        if (!report.isEmpty()) {
+            view.showMonthlyReport(report);
+            publishMonthlyReport(report);
+        }
         else System.out.println("Error producing report");
 
     }

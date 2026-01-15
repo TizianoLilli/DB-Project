@@ -64,7 +64,11 @@ public class InsegnanteController implements Controller{
         LocalDate endOfTheWeek = today.with(DayOfWeek.SUNDAY).plusWeeks(1);
 
         List<DataReport> report = reportDAO.getWeeklyReport(id_account, beginOfTheWeek, endOfTheWeek);
-        if (!report.isEmpty()) publishWeeklyReport(report);
+        if (!report.isEmpty()) {
+            report.getFirst().setInsegnante(id_account);
+            view.showWeeklyReport(report);
+            publishWeeklyReport(report);
+        }
         else System.out.println("Error producing report");
 
     }

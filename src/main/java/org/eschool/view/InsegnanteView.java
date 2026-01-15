@@ -1,11 +1,13 @@
 package org.eschool.view;
 
 import org.eschool.model.Lezione;
+import org.eschool.utils.DataReport;
 import org.eschool.utils.Input;
 import org.eschool.utils.enums.StatoLezione;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class InsegnanteView {
 
@@ -47,5 +49,20 @@ public class InsegnanteView {
         LocalTime time = LocalTime.parse(tempTime);
 
         return new Lezione(-1, course, date, time, StatoLezione.EROGATA, -1);
+    }
+
+    public void showWeeklyReport(List<DataReport> r){
+
+        System.out.printf("Teacher ID: %s - Weekly Report\n", r.getFirst().getInsegnante());
+        for(DataReport d: r){
+            System.out.printf("Course ID: %d - State: %s - %s %s\n", d.getCorso(), d.getStato(), d.getData_lezione(), d.getOra_lezione());
+            for (Integer i: d.getAssenti()){
+                if (i == 0) {
+                    System.out.println("No Absent");
+                    break;
+                }
+                System.out.printf("Absent ID: %d\n", i);
+            }
+        }
     }
 }

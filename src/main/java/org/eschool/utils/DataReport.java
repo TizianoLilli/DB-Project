@@ -1,25 +1,31 @@
 package org.eschool.utils;
 
+import org.eschool.utils.enums.StatoLezione;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataReport {
     private int insegnante;
     private int corso;
+    private StatoLezione stato;
     private LocalDate data_lezione;
     private LocalTime ora_lezione;
-    private List<Integer> assenti;
+    private List<Integer> assenti = new ArrayList<>();
 
-    public DataReport(int corso, LocalDate data, LocalTime ora){
+    public DataReport(int corso, StatoLezione stato, LocalDate data, LocalTime ora){
         this.corso = corso;
+        this.stato = stato;
         this.data_lezione = data;
         this.ora_lezione = ora;
     }
 
-    public DataReport(int insegnante, int corso, LocalDate data, LocalTime ora){
+    public DataReport(int insegnante, int corso, StatoLezione stato, LocalDate data, LocalTime ora){
         this.insegnante = insegnante;
         this.corso = corso;
+        this.stato = stato;
         this.data_lezione = data;
         this.ora_lezione = ora;
     }
@@ -31,6 +37,10 @@ public class DataReport {
     public int getCorso(){return this.corso;}
 
     public void setCorso(int corso) {this.corso = corso;}
+
+    public StatoLezione getStato() {return stato;}
+
+    public void setStato(StatoLezione stato) {this.stato = stato;}
 
     public LocalDate getData_lezione() {return data_lezione;}
 

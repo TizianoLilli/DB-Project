@@ -2,6 +2,7 @@ package org.eschool.dao;
 
 import org.eschool.utils.DataReport;
 import org.eschool.utils.ConnectionManager;
+import org.eschool.utils.enums.StatoLezione;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class ReportDAO {
 
     public List<DataReport> getWeeklyReport(int insegnante, LocalDate begin, LocalDate end){ //chiamato dall'insegnante
         List<DataReport> report = new ArrayList<>();
-        String query = "SELECT corso, data, ora, assente FROM report WHERE insegnante = ? AND data BETWEEN ? AND ? ORDER BY data, ora, corso";
+        String query = "SELECT corso, erogata, data, ora, assente FROM report WHERE insegnante = ? AND data BETWEEN ? AND ? ORDER BY data, ora, corso";
 
         try (PreparedStatement ps = connection.prepareStatement(query)){ //equivalente a fare ps.close() a fine try
 
@@ -29,6 +30,7 @@ public class ReportDAO {
             DataReport current = null;
             while (rs.next()) {
                 int corso = rs.getInt("corso");
+                StatoLezione stato_lezione = StatoLezione.fromState(rs.getInt("erogata"));
                 LocalDate data = rs.getDate("data").toLocalDate();
                 LocalTime ora = rs.getTime("ora").toLocalTime();
                 int assente = rs.getInt("assente");
@@ -38,7 +40,7 @@ public class ReportDAO {
                         !current.getData_lezione().equals(data) ||
                         !current.getOra_lezione().equals(ora)) {
 
-                    current = new DataReport(corso, data, ora);
+                    current = new DataReport(corso, stato_lezione, data, ora);
                     report.add(current);
                 }
 
@@ -54,7 +56,7 @@ public class ReportDAO {
 
     public List<DataReport> getMonthlyReport(LocalDate begin, LocalDate end){ //chiamato dal personale amministrativo
         List<DataReport> report = new ArrayList<>();
-        String query = "SELECT insegnante, corso, data, ora, assente FROM report WHERE data BETWEEN ? AND ? ORDER BY data, ora, corso";
+        String query = "SELECT insegnante, corso, erogata, data, ora, assente FROM report WHERE data BETWEEN ? AND ? ORDER BY data, ora, corso";
 
         try (PreparedStatement ps = connection.prepareStatement(query)){ //equivalente a fare ps.close() a fine try
 
@@ -67,6 +69,7 @@ public class ReportDAO {
             while (rs.next()) {
                 int insegnante = rs.getInt("insegnante");
                 int corso = rs.getInt("corso");
+                StatoLezione stato_lezione = StatoLezione.fromState(rs.getInt("erogata"));
                 LocalDate data = rs.getDate("data").toLocalDate();
                 LocalTime ora = rs.getTime("ora").toLocalTime();
                 int assente = rs.getInt("assente");
@@ -77,7 +80,7 @@ public class ReportDAO {
                         !current.getData_lezione().equals(data) ||
                         !current.getOra_lezione().equals(ora)) {
 
-                    current = new DataReport(insegnante, corso, data, ora);
+                    current = new DataReport(insegnante, corso, stato_lezione, data, ora);
                     report.add(current);
                 }
 

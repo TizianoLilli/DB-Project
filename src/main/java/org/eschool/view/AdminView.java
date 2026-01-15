@@ -3,6 +3,7 @@ package org.eschool.view;
 import org.eschool.model.Corso;
 import org.eschool.model.Insegnante;
 import org.eschool.model.Livello;
+import org.eschool.utils.DataReport;
 import org.eschool.utils.Input;
 
 import java.util.List;
@@ -112,6 +113,21 @@ public class AdminView {
                     i.getIndirizzo(),
                     i.getNazione()
             );
+        }
+    }
+
+    public void showMonthlyReport(List<DataReport> r){
+
+        System.out.println("Monthly Report");
+        for(DataReport d: r){
+            System.out.printf("Teacher ID: %d - Course ID: %d - State: %s - %s %s\n", d.getInsegnante(), d.getCorso(), d.getStato(), d.getData_lezione(), d.getOra_lezione());
+            for (Integer i: d.getAssenti()){
+                if (i == 0) {
+                    System.out.println("No Absent");
+                    break;
+                }
+                System.out.printf("Absent ID: %d\n", i);
+            }
         }
     }
 }
