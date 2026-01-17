@@ -3,6 +3,7 @@ package org.eschool.dao;
 import org.eschool.utils.DataReport;
 import org.eschool.utils.ConnectionManager;
 import org.eschool.utils.enums.StatoLezione;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -49,7 +50,7 @@ public class ReportDAO {
 
             rs.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get weekly report error", e);
         }
         return report;
     }
@@ -89,7 +90,7 @@ public class ReportDAO {
 
             rs.close();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get monthly report error", e);
         }
         return report;
     }

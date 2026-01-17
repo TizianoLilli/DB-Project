@@ -4,6 +4,7 @@ import org.eschool.dao.AccountDAO;
 import org.eschool.dao.IscrittoDAO;
 import org.eschool.model.Account;
 import org.eschool.model.Iscritto;
+import org.eschool.utils.exception.WrongDataException;
 import org.eschool.view.IscrittoView;
 import org.eschool.view.LoginView;
 
@@ -45,8 +46,14 @@ public class LoginController {
     private Account account;
 
     public Account logIn(){
-        account = view.auth();
-        return accountDAO.getAccount(account.getUsername(), account.getPassword());
+        try {
+            account = view.auth();
+            return accountDAO.getAccount(account.getUsername(), account.getPassword());
+        } catch (WrongDataException e) {
+            System.out.println("System failure...Try later");
+            throw new RuntimeException();
+        }
+
     }
 
     public void registration(){ //per registrare un nuovo iscritto
@@ -59,8 +66,8 @@ public class LoginController {
             iscrittoDAO.newSub(user, pass, iscritto);
             System.out.println("Subscriber successfully inserted!");
             sendCredentials(user, pass, iscritto.getRecapito());
-        } catch (SQLException e){
-            System.out.println(e.getMessage());
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
 
     }

@@ -3,6 +3,7 @@ package org.eschool.dao;
 import org.eschool.model.Iscritto;
 import org.eschool.utils.ConnectionManager;
 import org.eschool.utils.enums.Ruolo;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ public class AssenzaDAO {
 
     public AssenzaDAO() throws SQLException {this.connection = ConnectionManager.getConnection();}
 
-    public void newAbsence(int id_iscritto, int id_corso, LocalDate data, LocalTime ora) throws SQLException {
+    public void newAbsence(int id_iscritto, int id_corso, LocalDate data, LocalTime ora) {
 
         String query = "{CALL new_absence(?, ?, ?, ?)}";
 
@@ -27,7 +28,7 @@ public class AssenzaDAO {
             cs.executeQuery();
 
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw new WrongDataException("New absence error", e);
         }
     }
 

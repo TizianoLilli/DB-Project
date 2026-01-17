@@ -6,6 +6,7 @@ import org.eschool.model.Insegnante;
 import org.eschool.model.Iscritto;
 import org.eschool.utils.ConnectionManager;
 import org.eschool.utils.enums.Ruolo;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -38,7 +39,7 @@ public class IscrittoDAO {
                 iscritti.add(iscritto);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get subscribers error", e);
         }
         return iscritti;
     }
@@ -65,12 +66,12 @@ public class IscrittoDAO {
             rs.close(); //chiudo il result set e rilascio le risorse
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new WrongDataException("Get subscriber error", e);
         }
         return null;
     }
 
-    public void newSub(String user, String pass, Iscritto iscritto) throws SQLException {
+    public void newSub(String user, String pass, Iscritto iscritto){
 
         String query = "{CALL new_subscriber(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
@@ -89,7 +90,7 @@ public class IscrittoDAO {
             cs.executeQuery();
 
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw new WrongDataException("New Subscription error", e);
         }
     }
 

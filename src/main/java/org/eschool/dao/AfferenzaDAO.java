@@ -1,6 +1,7 @@
 package org.eschool.dao;
 
 import org.eschool.utils.ConnectionManager;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -12,7 +13,7 @@ public class AfferenzaDAO {
 
     public AfferenzaDAO() throws SQLException {this.connection = ConnectionManager.getConnection();}
 
-    public void newReference(int id_corso, int id_insegnante) throws SQLException {
+    public void newReference(int id_corso, int id_insegnante) {
         String sql = "INSERT INTO afferenza VALUES (?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) { //equivalente a fare cs.close() a fine try
@@ -22,8 +23,8 @@ public class AfferenzaDAO {
 
             ps.execute();
 
-        } catch (SQLException e){
-            throw new SQLException(e.getMessage());
+        } catch (SQLException e) {
+            throw new WrongDataException("New Reference error", e);
         }
     }
 }

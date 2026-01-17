@@ -2,6 +2,7 @@ package org.eschool.dao;
 
 import org.eschool.model.Corso;
 import org.eschool.utils.ConnectionManager;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.*;
 
@@ -19,15 +20,12 @@ public class PartecipazioneDAO {
             cs.setInt(2, id_corso);
 
             cs.execute();
-        } catch (SQLException e){
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("ErrorCode: " + e.getErrorCode());
-            System.out.println("Message: " + e.getMessage());
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new WrongDataException("Error during course subscription", e);
         }
     }
 
-    public int getCourseFromIscritto(int id){
+    public Integer getCourseFromIscritto(int id){
         String query = "SELECT corso FROM partecipazione WHERE iscritto = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -40,9 +38,9 @@ public class PartecipazioneDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get course error", e);
         }
-        throw new RuntimeException();
+        return null;
     }
 
     public void deletePartecipation(int id_iscritto, int id_corso){
@@ -54,11 +52,8 @@ public class PartecipazioneDAO {
             cs.setInt(2, id_corso);
 
             cs.execute();
-        } catch (SQLException e){
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("ErrorCode: " + e.getErrorCode());
-            System.out.println("Message: " + e.getMessage());
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new WrongDataException("Delete participation error", e);
         }
     }
 

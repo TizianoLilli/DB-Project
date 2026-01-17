@@ -4,6 +4,7 @@ import org.eschool.model.Corso;
 import org.eschool.model.Insegnante;
 import org.eschool.utils.ConnectionManager;
 import org.eschool.utils.enums.Ruolo;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,12 +31,12 @@ public class InsegnanteDAO {
                 insegnanti.add(insegnante);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get teachers error", e);
         }
         return insegnanti;
     }
 
-    public void newTeacher(String user, String pass, Insegnante insegnante) throws SQLException {
+    public void newTeacher(String user, String pass, Insegnante insegnante) {
 
         String query = "{CALL new_teacher(?, ?, ?, ?, ?, ?, ?)}";
 
@@ -52,7 +53,7 @@ public class InsegnanteDAO {
             cs.executeQuery();
 
         } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
+            throw new WrongDataException("New teacher error", e);
         }
     }
 

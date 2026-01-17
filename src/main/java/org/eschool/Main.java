@@ -20,12 +20,19 @@ public class Main {
                 ok = true;
                 Account account = controller.setup();
 
-                switch (account.getRole()){
-                    case ISCRITTO -> new IscrittoController(account).start();
-                    case INSEGNANTE -> new InsegnanteController(account).start();
-                    case PERSONALE_AMMINISTRATIVO -> new AdminController(account).start();
-                    case PERSONALE_SEGRETERIA -> new SegreteriaController(account).start();
-                    default -> ok = false;
+                if (account == null) {
+                    ok = false;
+                    System.out.println("Wrong username or password...Try again");
+                } else {
+
+                    switch (account.getRole()){
+                        case ISCRITTO -> new IscrittoController(account).start();
+                        case INSEGNANTE -> new InsegnanteController(account).start();
+                        case PERSONALE_AMMINISTRATIVO -> new AdminController(account).start();
+                        case PERSONALE_SEGRETERIA -> new SegreteriaController(account).start();
+                        default -> ok = false;
+                    }
+
                 }
             }
 

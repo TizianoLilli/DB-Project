@@ -6,6 +6,7 @@ import org.eschool.model.Corso;
 import org.eschool.model.Insegnante;
 import org.eschool.model.Livello;
 import org.eschool.utils.DataReport;
+import org.eschool.utils.exception.WrongDataException;
 import org.eschool.view.AdminView;
 
 import java.sql.SQLException;
@@ -54,22 +55,21 @@ public class AdminController implements Controller {
     }
 
     public void insertCourse(){ //v
+        try {
+            List<Livello> livelli = livelloDAO.getAllLevels();
 
-        List<Livello> livelli = livelloDAO.getAllLevels();
+            if (!livelli.isEmpty()){
+                String nome_livello = view.courseForm(livelli);
 
-        if (!livelli.isEmpty()){
-            String nome_livello = view.courseForm(livelli);
+                Integer id_corso = corsoDAO.newCourse(nome_livello);
+                if(id_corso == null) System.out.println("No course inserted");
+                else System.out.printf("Course successfully inserted!\nID: %d\n", id_corso);
 
-            try{
-                int id_corso = corsoDAO.newCourse(nome_livello);
-                System.out.printf("Course successfully inserted!\nID: %d\n", id_corso);
-            } catch (SQLException e){
-                System.out.println("Error during course insertion");
-                System.out.println(e.getMessage());
-            }
+            } else System.out.println("No levels found...");
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
+        }
 
-
-        } else System.out.println("No levels found...");
 
     }
 
@@ -84,8 +84,8 @@ public class AdminController implements Controller {
             insegnanteDAO.newTeacher(user, pass, insegnante);
             System.out.println("Teacher successfully inserted!");
             sendCredentials(user, pass);
-        } catch (SQLException e){
-            System.out.println(e.getMessage());
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
 
 
@@ -98,24 +98,29 @@ public class AdminController implements Controller {
     }
 
     public void assignTeacher(){
-        List<Corso> corsi = corsoDAO.getAllCourses();
-        List<Insegnante> insegnanti = insegnanteDAO.getAllTeachers();
+        try {
+            List<Corso> corsi = corsoDAO.getAllCourses();
+            List<Insegnante> insegnanti = insegnanteDAO.getAllTeachers();
 
-        if (corsi.isEmpty()) System.out.println("No courses found...");
-        else if (insegnanti.isEmpty()) System.out.println("No teachers found...");
-        else {
+            if (corsi.isEmpty()) System.out.println("No courses found...");
+            else if (insegnanti.isEmpty()) System.out.println("No teachers found...");
+            else {
 
-            try{
-                int id_corso = view.referenceToCourse(corsi);
-                int id_insegnante = view.referenceToTeacher(insegnanti);
-                afferenzaDAO.newReference(id_corso, id_insegnante);
-                System.out.println("Reference successfully inserted!");
-            } catch (SQLException e){
-                System.out.println("Error during reference insertion");
-                System.out.println(e.getMessage());
+                try{
+                    int id_corso = view.referenceToCourse(corsi);
+                    int id_insegnante = view.referenceToTeacher(insegnanti);
+                    afferenzaDAO.newReference(id_corso, id_insegnante);
+                    System.out.println("Reference successfully inserted!");
+                } catch (WrongDataException e){
+                    System.out.println("Error during reference insertion");
+                    System.out.println(e.getMessage());
+                }
+
             }
-
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
+
 
     }
 
@@ -126,12 +131,16 @@ public class AdminController implements Controller {
         LocalDate beginOfTheMonth = today.withDayOfMonth(1);
         LocalDate endOfTheMonth = today.plusMonths(1).withDayOfMonth(today.plusMonths(1).lengthOfMonth());
 
-        List<DataReport> report = reportDAO.getMonthlyReport(beginOfTheMonth, endOfTheMonth);
-        if (!report.isEmpty()) {
-            view.showMonthlyReport(report);
-            publishMonthlyReport(report);
+        try{
+            List<DataReport> report = reportDAO.getMonthlyReport(beginOfTheMonth, endOfTheMonth);
+            if (!report.isEmpty()) {
+                view.showMonthlyReport(report);
+                publishMonthlyReport(report);
+            }
+            else System.out.println("Error producing report");
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
-        else System.out.println("Error producing report");
 
     }
 

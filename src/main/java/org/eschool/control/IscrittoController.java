@@ -6,6 +6,7 @@ import org.eschool.dao.PartecipazioneDAO;
 import org.eschool.model.Account;
 import org.eschool.model.Corso;
 import org.eschool.model.Iscritto;
+import org.eschool.utils.exception.WrongDataException;
 import org.eschool.view.IscrittoView;
 
 import java.sql.SQLException;
@@ -46,21 +47,30 @@ public class IscrittoController implements Controller{
         System.out.print("Exiting...");
     }
 
-    public void viewCourses() throws SQLException { //per iscriversi ad un corso
-        List<Corso> corsi = corsoDAO.getAllCourses();
+    public void viewCourses() { //per vedere corsi
+        try {
+            List<Corso> corsi = corsoDAO.getAllCourses();
 
-        if (!corsi.isEmpty()){
-            view.showCourses(corsi);
-        } else System.out.println("No courses found...");
+            if (!corsi.isEmpty()){
+                view.showCourses(corsi);
+            } else System.out.println("No courses found...");
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
+        }
+
     }
 
     public void viewActiveCourse(){
-        int id_corso = partecipazioneDAO.getCourseFromIscritto(id_account);
+        try {
+            Integer id_corso = partecipazioneDAO.getCourseFromIscritto(id_account);
 
-        if (id_corso == -1) System.out.println("No active subscription..."); //non va bene questa
-            // gestione metti un try-catch qui
-        else {
-            view.showActiveCourse(id_corso);
+            if (id_corso == null) System.out.println("No active subscription...");
+            else {
+                view.showActiveCourse(id_corso);
+            }
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
+
     }
 }

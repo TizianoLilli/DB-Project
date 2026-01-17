@@ -3,6 +3,7 @@ package org.eschool.dao;
 import org.eschool.model.Corso;
 import org.eschool.model.Livello;
 import org.eschool.utils.ConnectionManager;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -28,12 +29,12 @@ public class CorsoDAO {
                 corsi.add(corso);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get courses error", e);
         }
         return corsi;
     }
 
-    public int newCourse(String livello) throws SQLException {
+    public Integer newCourse(String livello) {
         String query = "INSERT INTO corso(data_attivazione, livello) VALUES (?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) { //equivalente a fare ps.close() a fine try
@@ -45,9 +46,9 @@ public class CorsoDAO {
                 if (rs.next()) return rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new SQLException("No ID generated for course");
+            throw new WrongDataException("New course error", e);
         }
-        return -1;
+        return null;
     }
 
 }

@@ -5,6 +5,7 @@ import org.eschool.dao.ReportDAO;
 import org.eschool.model.Account;
 import org.eschool.model.Lezione;
 import org.eschool.utils.DataReport;
+import org.eschool.utils.exception.WrongDataException;
 import org.eschool.view.InsegnanteView;
 
 import java.sql.SQLException;
@@ -49,8 +50,8 @@ public class InsegnanteController implements Controller{
         try{
             assenzaDAO.newAbsence(id_iscritto, lezione.getCorso(), lezione.getData_lezione(), lezione.getOra_lezione());
             System.out.println("Absence successfully inserted!");
-        } catch (SQLException e){
-            System.out.println(e.getMessage());
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
 
 
@@ -63,13 +64,17 @@ public class InsegnanteController implements Controller{
         LocalDate beginOfTheWeek = today.with(DayOfWeek.MONDAY);
         LocalDate endOfTheWeek = today.with(DayOfWeek.SUNDAY).plusWeeks(1);
 
-        List<DataReport> report = reportDAO.getWeeklyReport(id_account, beginOfTheWeek, endOfTheWeek);
-        if (!report.isEmpty()) {
-            report.getFirst().setInsegnante(id_account);
-            view.showWeeklyReport(report);
-            publishWeeklyReport(report);
+        try{
+            List<DataReport> report = reportDAO.getWeeklyReport(id_account, beginOfTheWeek, endOfTheWeek);
+            if (!report.isEmpty()) {
+                report.getFirst().setInsegnante(id_account);
+                view.showWeeklyReport(report);
+                publishWeeklyReport(report);
+            }
+            else System.out.println("Error producing report");
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
         }
-        else System.out.println("Error producing report");
 
     }
 

@@ -3,6 +3,7 @@ package org.eschool.dao;
 import org.eschool.model.Account;
 import org.eschool.utils.ConnectionManager;
 import org.eschool.utils.enums.Ruolo;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,10 +35,9 @@ public class AccountDAO {
                 return new Account(rs.getInt("id"), user, pass, role);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new WrongDataException("Login error", e);
         }
 
-        System.out.print("No account found...");
         return null;
     }
 

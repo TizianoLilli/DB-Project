@@ -6,6 +6,7 @@ import org.eschool.dao.PartecipazioneDAO;
 import org.eschool.model.Account;
 import org.eschool.model.Corso;
 import org.eschool.model.Iscritto;
+import org.eschool.utils.exception.WrongDataException;
 import org.eschool.view.SegreteriaView;
 
 import java.sql.SQLException;
@@ -44,46 +45,54 @@ public class SegreteriaController implements Controller{
     }
 
     public void insertSubscription(){
-        List<Corso> corsi = corsoDAO.getAllCourses();
-        List<Iscritto> iscritti = iscrittoDAO.getAllSubscribers();
+        try{
+            List<Corso> corsi = corsoDAO.getAllCourses();
+            List<Iscritto> iscritti = iscrittoDAO.getAllSubscribers();
 
-        if (!corsi.isEmpty()){
-            if (!iscritti.isEmpty()) {
+            if (!corsi.isEmpty()){
+                if (!iscritti.isEmpty()) {
 
-                int id_corso = view.showCourses(corsi);
-                int id_iscritto = view.showSubscriber(iscritti);
+                    int id_corso = view.showCourses(corsi);
+                    int id_iscritto = view.showSubscriber(iscritti);
 
-                try{
-                    partecipazioneDAO.newPartecipation(id_iscritto, id_corso);
-                    System.out.println("Successfully subscribed!");
-                } catch (Exception e){
-                    System.out.println("Error during course subscription");
-                    System.out.println(e.getMessage());
-                }
-            }else System.out.println("No subscriber found...");
+                    try{
+                        partecipazioneDAO.newPartecipation(id_iscritto, id_corso);
+                        System.out.println("Successfully subscribed!");
+                    } catch (WrongDataException e){
+                        System.out.println(e.getMessage());
+                    }
+                }else System.out.println("No subscriber found...");
 
-        } else System.out.println("No courses found...");
+            } else System.out.println("No courses found...");
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
+        }
+
     }
 
     public void deleteSubscription(){
-        List<Iscritto> iscritti = iscrittoDAO.getAllSubscribers();
+        try {
+            List<Iscritto> iscritti = iscrittoDAO.getAllSubscribers();
 
-        if (!iscritti.isEmpty()) {
+            if (!iscritti.isEmpty()) {
 
-            int id_iscritto = view.showSubscriber(iscritti);
-            int id_corso = partecipazioneDAO.getCourseFromIscritto(id_iscritto);
+                int id_iscritto = view.showSubscriber(iscritti);
+                Integer id_corso = partecipazioneDAO.getCourseFromIscritto(id_iscritto);
 
-            if (id_corso == -1) System.out.println("No active subscription...");
-            //non va bene metti try-catch
-            else {
-                int value = view.showActiveCourse(id_corso);
+                if (id_corso == null) System.out.println("No active subscription...");
+                else {
+                    int value = view.showActiveCourse(id_corso);
 
-                if(value == 1) {
-                    partecipazioneDAO.deletePartecipation(id_iscritto, id_corso);
-                    System.out.println("Subscription successfully deleted!");
+                    if(value == 1) {
+                        partecipazioneDAO.deletePartecipation(id_iscritto, id_corso);
+                        System.out.println("Subscription successfully deleted!");
+                    }
                 }
-            }
-        } else System.out.println("No subscriber found...");
+            } else System.out.println("No subscriber found...");
+        } catch (WrongDataException e){
+            System.out.println(e.getCause().getMessage());
+        }
+
     }
 
 }

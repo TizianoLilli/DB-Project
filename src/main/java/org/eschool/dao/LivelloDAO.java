@@ -3,6 +3,7 @@ package org.eschool.dao;
 import org.eschool.model.Corso;
 import org.eschool.model.Livello;
 import org.eschool.utils.ConnectionManager;
+import org.eschool.utils.exception.WrongDataException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,7 @@ public class LivelloDAO {
                 livelli.add(livello);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new WrongDataException("Get Levels error", e);
         }
         return livelli;
     }
